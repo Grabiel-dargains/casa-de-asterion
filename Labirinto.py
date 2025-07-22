@@ -125,13 +125,13 @@ class Entidade:
             self.sala_atual.sair_ocupante(self)
             self.sala_atual = nova_sala
             self.sala_atual.entrar_ocupante(self)
-            print(f"{self.nome} moveu-se para a {self.sala_atual.nome}.")
+            print(f"{self.nome} moveu-se para {self.sala_atual.nome}.")
         elif not nova_sala and self.sala_atual.vizinhos:
             proxima_sala = random.choice(self.sala_atual.vizinhos)
             self.sala_atual.sair_ocupante(self)
             self.sala_atual = proxima_sala
             self.sala_atual.entrar_ocupante(self)
-            print(f"{self.nome} moveu-se para a {self.sala_atual.nome}.")
+            print(f"{self.nome} moveu-se para {self.sala_atual.nome}.")
         else:
             print(f"{self.nome} não tem para onde se mover da {self.sala_atual.nome}.")
         
@@ -149,7 +149,7 @@ class Minotauro(Entidade):
         self.contemplacao_level = 0
 
     def contemplar(self, tempo_acao=4, current_time=0.0, perf_thread=None):
-        print(f"Minotauro está contemplando na {self.sala_atual.nome}.")
+        print(f"Minotauro está contemplando em {self.sala_atual.nome}.")
         for i in range(self.contemplacao_level):
             # FIX: Usando valores de reverb e wind mais sensatos (0-1)
             reverb_send = random.uniform(0.3, 0.7)
@@ -160,7 +160,7 @@ class Minotauro(Entidade):
         time.sleep(tempo_acao)
 
     def correr(self, tempo_acao=2, current_time=0.0, perf_thread=None):
-        print(f"Minotauro está correndo pela {self.sala_atual.nome}.")
+        print(f"Minotauro está correndo em {self.sala_atual.nome}.")
         self.mover(tempo_acao=tempo_acao)
         freq = random.randint(30, 500)
         # FIX: Usando valores de reverb e wind mais sensatos (0-1)
@@ -178,12 +178,12 @@ class Minotauro(Entidade):
             print(f"Minotauro assusta {', '.join([h.nome for h in humanos_na_sala])} na {self.sala_atual.nome}!")
             self.enviar_evento_csound(100, tempo_acao, 0.6, 50, 0.5, 10, 0.1, current_time, reverb_send, wind_send, delay_send, perf_thread)
         else:
-            print(f"Minotauro tenta assustar, mas não há humanos na {self.sala_atual.nome}.")
+            print(f"Minotauro tenta assustar, mas não há humanos em {self.sala_atual.nome}.")
         time.sleep(tempo_acao)
 
     def atacar_humano(self, humano, tempo_acao=2, current_time=0.0, perf_thread=None):
         if humano in self.sala_atual.ocupantes:
-            print(f"Minotauro ataca {humano.nome} na {self.sala_atual.nome}!")
+            print(f"Minotauro ataca {humano.nome} em {self.sala_atual.nome}!")
             freq = random.randint(30, 500)
             reverb_send = random.uniform(0.2, 0.5)
             wind_send = random.uniform(0.1, 0.4)
@@ -202,7 +202,7 @@ class Teseu(Entidade):
         self.tempo_base_acao = 1
 
     def buscar_minotauro(self, current_time=0.0, perf_thread=None):
-        print(f"Teseu está buscando o Minotauro na {self.sala_atual.nome}.")
+        print(f"Teseu está buscando o Minotauro em {self.sala_atual.nome}.")
         self.gerar_som_sala(self.sala_atual, 1, current_time, perf_thread)
         
         self.mover(tempo_acao=self.tempo_base_acao)
@@ -216,14 +216,14 @@ class Teseu(Entidade):
         for ocupante in self.sala_atual.ocupantes:
             if isinstance(ocupante, Minotauro):
                 self.minotauro_encontrado = True
-                print(f"Teseu encontrou o Minotauro na {self.sala_atual.nome}!")
+                print(f"Teseu encontrou o Minotauro em {self.sala_atual.nome}!")
                 self.enviar_evento_csound(100, 1.0, 0.5, freq, 0.5, 8, 0.08, current_time, reverb_send, wind_send, delay_send, perf_thread)
                 return True
         return False
 
     def matar_minotauro(self, minotauro, tempo_acao=5, current_time=0.0, perf_thread=None):
         if self.minotauro_encontrado and self.sala_atual == minotauro.sala_atual:
-            print(f"Teseu mata o Minotauro na {self.sala_atual.nome}!")
+            print(f"Teseu mata o Minotauro em {self.sala_atual.nome}!")
             freq = random.randint(30, 670)
             reverb_send = 0.2
             wind_send = 0.1
